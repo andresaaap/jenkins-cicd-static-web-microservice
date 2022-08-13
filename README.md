@@ -1,10 +1,6 @@
-## Github repo link
-
-https://github.com/andresaaap/Capstone-cloud
-
 ## Intro
 
-This is my Udacity Cloud DevOps Capstone project. In this project I created a CI/CD pipeline for a basic website that deploys to a cluster in AWS EKS
+This is a Jenkins CI CI/CD pipeline for microservices, pushing Docker containers to the Docker repository and deploying them to a Kubernetes cluster in AWS EKS. This will create value by making the code building process and deploying faster and automatic.
 
 ## Install
 
@@ -19,39 +15,27 @@ To be able to use this CI/CD pipeline we will need:
 2. To install docker please follow this guide https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
 3. To install eksctl, aws cli and kubectl follow this guide https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
 
-## Project tour
+## Project explanation
 
-There are 3 pipelines. I am going to guide you on the pipelines and how are the use from the beginning to the moment that the application is deployed.
+The pipeline has the following stages. First, there is a linting stage using the library **tidy** to **lint the HTML** and catch errors in the HTML. Please look at the image: lint.png
 
-### Important
+Then, I use **docker cli** to build the image and push it to a docker repository. Please look at the images: build-image.png push-image.png docker-image-repository.png
 
-eksctl uses cloudformation to deploy the cluster!!!!!!!
+Then, there is a stage where I use **kubectl** to deploy the docker image to the cluster in the blue and green pod and create a **service** that redirects traffic to the blue pod. Please look at the images: deploy-blue-container.png deploy-green-container.png service-redirect-blue.png
 
-### 1. Create clusters pipeline
+Then, there is a stage where the **service** is updated to redirect traffic to the green pod. Please look at the image: service-redirect-green.png
 
-**Pipeline**
+Finally, the website can be access using the URL of the service and the port. Please look at the images: website.png service-pods.png
 
-You can see this  pipeline in the image called **Pipelines plan.png** in the "Pipeline 1". You can see the **Jenkinsfile** in the folder **create-clusters-pipelines**.
+## Resources & Links
 
-**Result**
-
-In there you use the **eksctl** to create the **cluster**. Please look at the image: cluster.png
-
-### 2. Deploy containers pipeline
-
-**Pipeline**
-
-You can see this  pipeline in the image called **Pipelines plan.png** in the "Pipeline 2". You can see the **Jenkinsfile** in the folder **deploy-containers-pipeline**.
-
-**Result**
-Then, in there you use the **tidy** to **lint the HTML**. Please look at the image: lint.png
-
-Then, we use **docker cli** to build the image and push it. Please look at the images: build-image.png push-image.png docker-image-repository.png
-
-
-In there you use the **kubectl** to deploy the image to the cluster in the blue and green pod and create a **service** that redirects traffic to the blue pod. Please look at the images: deploy-blue-container.png deploy-green-container.png service-redirect-blue.png
-
-Then, the **service** is updated to redirect traffic to the green pod. Please look at the image: service-redirect-green.png
-
-Then, the website can be access using the URL of the service and the port. Please look at the images: website.png service-pods.png
+- [Great starting examples of CICD pipelines for kubernetes apps using CircleCI and AWS EKS
+](https://andresaaap.medium.com/great-starting-examples-of-cicd-pipelines-for-kubernetes-apps-using-circleci-and-aws-eks-38985e3b3529)
+- [Testing a container app or microservices app to deploy it to an AWS EKS cluster
+](https://andresaaap.medium.com/testing-a-container-app-or-microservices-app-to-deploy-it-to-an-aws-eks-cluster-2b8778e22d21)
+- [Errors in kubernetes and debugging](https://andresaaap.medium.com/errors-in-kubernetes-and-debugging-a7b803632bd9)
+- [How to configure and execute a rolling update strategy in kubernetes?](https://andresaaap.medium.com/how-to-configure-and-execute-a-rolling-update-strategy-in-kubernetes-5e662be968b)
+- [How to install docker, aws cli, eksctl, kubectl for Jenkins in Linux Ubuntu 18.04?](https://andresaaap.medium.com/how-to-install-docker-aws-cli-eksctl-kubectl-for-jenkins-in-linux-ubuntu-18-04-3e3c4ceeb71)
+- [Simple blue-green deployment in kubernetes using minikube, Capstone project, Cloud DevOps Nanodegree](https://andresaaap.medium.com/simple-blue-green-deployment-in-kubernetes-using-minikube-b88907b2e267)
+- [Capstone project, Cloud DevOps Nanodegree FAQ](https://andresaaap.medium.com/capstone-cloud-devops-nanodegree-4493ab439d48)
 
